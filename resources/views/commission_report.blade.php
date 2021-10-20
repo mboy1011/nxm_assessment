@@ -1,39 +1,79 @@
 @extends('layout.app')
 @section('title','Commission Report')
 @section('content')
-    <table class="table" id="myTable">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Invoice Number</th>
-                <th scope="col">Purchaser</th>
-                <th scope="col">Distributor</th>
-                <th scope="col">Date</th>
-                <th scope="col">Order Total</th>
-                <th scope="col">Referred Count</th>
-                <th scope="col">Percentage</th>
-                <th scope="col">Commission</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $item)
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon0">Distributor</span>
+                </div>
+                <input type="text" class="form-control" name="dist" id="dist" placeholder="Distributor" aria-label="Distributor" aria-describedby="basic-addon0">
+            </div>
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Min Date</span>
+                </div>
+                <input type="date" class="form-control" name="min_date" id="min_date"  aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon2">Max Date</span>
+                </div>
+                <input type="date" class="form-control" name="max_date" id="max_date"  aria-describedby="basic-addon2">
+            </div>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+        <div class="col"></div>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table" id="myTable">
+            <thead class="thead-dark">
                 <tr>
-                    <th scope="row">{{$item->invoice_number}}</th>
-                    <td>{{ $item->first_name }} {{ $item->last_name }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->order_date }}</td>
-                    <td>{{ $item->order_total }}</td>
-                    <td>{{ $item->referred_count }}</td>
-                    <td>{{ $item->percentages }}</td>
-                    <td>{{ $item->commission }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary btn-sm view_items" data-invno="{{ $item->invoice_number }}" data-id="{{ $item->oid }}">View Items</button>
-                    </td>
+                    <th scope="col">Invoice Number</th>
+                    <th scope="col">Purchaser</th>
+                    <th scope="col">Distributor</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Order Total</th>
+                    <th scope="col">Referred Count</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Commission</th>
+                    <th scope="col">Actions</th>
                 </tr>
-            @endforeach
- 
-        </tbody>
-    </table>  
+            </thead>
+            <tbody>
+                @foreach ($data as $item)
+                    <tr>
+                        <th scope="row">{{$item->invoice_number}}</th>
+                        <td>{{ $item->first_name }} {{ $item->last_name }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->order_date }}</td>
+                        <td>{{ $item->order_total }}</td>
+                        <td>{{ $item->referred_count }}</td>
+                        <td>{{ $item->percentages }}</td>
+                        <td>{{ $item->commission }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm view_items" data-invno="{{ $item->invoice_number }}" data-id="{{ $item->oid }}">View Items</button>
+                        </td>
+                    </tr>
+                @endforeach
+    
+            </tbody>
+        </table>  
+    </div>
+    <br>
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
