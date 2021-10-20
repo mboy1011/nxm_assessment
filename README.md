@@ -27,6 +27,9 @@
     -   Create an <b>admin</b> user to localhost/127.0.0.1 database together with the password: <code>ALTER USER 'admin'@'localhost' IDENTIFIED BY 'Admin_2k21'</code>
     -   Grant ALL permission to <b>admin</b> user: <code>GRANT ALL ON *.* TO 'admin'@'localhost';</code>
     -   Save changes to database without reloading or restart mysql service: <code>FLUSH PRIVILEGES;</code>
+    -   Login to MySQL using the user `admin`: <code>sudo mysql -u admin -p</code> then enter the password: `Admin_2k21`
+    -   Create a database: <code>CREATE DATABASE nxm_assessment;</code>
+    -   Import the dumped MySQL file `nxm_assessment.sql`: <code>SOURCE ./nxm_assessment.sql;</code> 
 4. Install Composer for Laravels' PHP Dependency Manager 
     -   <code>curl -sS https://getcomposer.org/installer | php</code>
     -   <code>sudo mv composer.phar /usr/local/bin/composer</code>
