@@ -8,7 +8,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mx-auto">
         <li class="nav-item {{ request()->is('/') ? 'active' : ''}}">
             <a class="nav-link" href="/">Commission Report</a>
         </li>
