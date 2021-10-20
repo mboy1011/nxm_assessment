@@ -1,5 +1,43 @@
 @extends('layout.app')
 @section('title','Commission Report')
+@section('css')
+    <style>
+    .ui-autocomplete {
+        max-height: 300px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        /*  */
+        position: absolute;
+        z-index: 99999 !important;
+        cursor: default;
+        padding: 0;
+        margin-top: 2px;
+        list-style: none;
+        background-color: #ffffff;
+        border: 1px solid #ccc -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .ui-autocomplete>li {
+        padding: 3px 20px;
+    }
+
+    .ui-autocomplete>li.ui-state-focus {
+        background-color: #DDD;
+    }
+
+    .ui-helper-hidden-accessible {
+        display: none;
+    }
+    </style>
+@endsection
 @section('content')
     <br>
     <div class="row">
@@ -8,7 +46,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon0">Distributor</span>
                 </div>
-                <input type="text" class="form-control" name="dist" id="dist" placeholder="Distributor" aria-label="Distributor" aria-describedby="basic-addon0">
+                <input class="form-control autocomplete" name="dist" id="dist" placeholder="Distributor" aria-label="Distributor" aria-describedby="basic-addon0">
             </div>
         </div>
         <div class="col"></div>
@@ -112,7 +150,23 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
         $(function(){
-            $('#myTable').DataTable();
+            // DataTable Init
+            oTable = $('#myTable').DataTable({
+                autoFill: true
+            });
+            // AutoComplete JQUERY UI get DataTable Data on Column
+                
+            $(".autocomplete").autocomplete({
+                source: oTable.columns(1).data()[0]
+            });
+            // 
+            $('#dist').keyup(function(){
+                oTable
+                .columns(2)
+                .search($(this).val())
+                .draw() ;
+            });
+            // View Item Click Event
             $('.view_items').click(function(){
                 // Empty Modal Table
                 $('#modal-tbody').empty();
