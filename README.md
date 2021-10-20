@@ -84,7 +84,7 @@
     -   <code>php artisan migrate</code> to migrate all database migrations.
     -   <code>php artisan key:generate</code> to generate an APP_KEY to `.env`
 > To Run the NXM ASSESSMENT Locally for development: <code>php artisan serve</code>
-
+> To Run the PART B NXM ASSESSMENT, switch to `part-b` branch: <code>git switch part-b</code> 
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
