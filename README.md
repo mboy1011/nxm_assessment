@@ -6,7 +6,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
-> To Run the PART B NXM ASSESSMENT, switch to `part-b` branch: <code>git switch part-b</code> 
+> To Run the PART B NXM ASSESSMENT, switch to `part-b` branch: <code>git switch part-b</code>
+ 
 ## Installation
 > Deploy NXM ASSESSMENT in a Web Server (Ubuntu)
 1. Install Apache Web Server
