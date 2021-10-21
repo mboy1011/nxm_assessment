@@ -16,4 +16,5 @@ use App\Http\Controllers\Report;
 
 Route::get('/',[Report::class,'commission']);
 Route::post('/show',[Report::class,'show']);
+Route::post('/filter',[Report::class,'filter']);
 Route::get('/rank',[Report::class,'rank']);
