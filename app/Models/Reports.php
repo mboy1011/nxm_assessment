@@ -33,7 +33,7 @@ class Reports extends Model
         ->join('user_category','user_category.user_id','=','users.id')
         ->join('categories','categories.id','=','user_category.category_id')
         ->join('orders','orders.purchaser_id','=','users.id')
-        ->where('categories.id','=',2)
+        // ->where('categories.id','=',2)
         ->havingRaw('users.enrolled_date BETWEEN ? AND ?',[$min,$max])
         ->skip(0)
         ->take(100)
