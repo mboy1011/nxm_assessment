@@ -12,8 +12,13 @@ class Report extends Controller
 {
     public function commission()
     {
+        // Date Interval
+        $min = date("2001-9-11");
+        $max = date("Y-m-d");
+
         $com_rep = Reports::select(
             'orders.invoice_number',
+            'users.enrolled_date',
             'users.first_name',
             'users.id as uid',
             'users.last_name',
@@ -21,7 +26,7 @@ class Report extends Controller
             'orders.order_date',
             'orders.id as oid',
             DB::raw('distributor_name(users.id) as dist_name'),
-            DB::raw('referred_count(users.id) as referred_count'),
+            DB::raw("referred_count_by_date(users.id,'$min','$max') as referred_count"),
             DB::raw('percentage_commission(referred_count(users.id)) as percentages'),
             DB::raw('order_total_count(orders.id) as order_total'),
             DB::raw('(order_total_count(orders.id)*percentage_commission(referred_count(users.id))) as commission')
@@ -31,10 +36,11 @@ class Report extends Controller
             ->join('categories','categories.id','=','user_category.category_id')
             ->join('orders','orders.purchaser_id','=','users.id')
             ->where('categories.id','=',2)
+            ->havingRaw('users.enrolled_date BETWEEN ? AND ?',[$min,$max])
             ->skip(0)
             ->take(100)
             ->get();
-        return view('commission_report',['data'=>$com_rep]);
+        return view('commission_report',['data'=>$com_rep,'min'=>$min,'max'=>$max]);
     }
     public function rank()
     {

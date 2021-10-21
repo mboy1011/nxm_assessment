@@ -59,7 +59,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Min Date</span>
                 </div>
-                <input type="date" class="form-control" name="min_date" id="min_date"  aria-describedby="basic-addon1">
+                <input type="date" class="form-control" max="{{$max}}" name="min_date" id="min_date"  aria-describedby="basic-addon1" value="{{$min}}">
             </div>
         </div>
         <div class="col">
@@ -67,7 +67,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Max Date</span>
                 </div>
-                <input type="date" class="form-control" name="max_date" id="max_date"  aria-describedby="basic-addon2">
+                <input type="date" class="form-control" name="max_date" id="max_date"  aria-describedby="basic-addon2" value="{{$max}}">
             </div>
         </div>
         <div class="col">
