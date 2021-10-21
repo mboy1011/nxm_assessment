@@ -96,7 +96,7 @@
                     <tr>
                         <th scope="row">{{$item->invoice_number}}</th>
                         <td>{{ $item->first_name }} {{ $item->last_name }}</td>
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->dist_name }}</td>
                         <td>{{ $item->order_date }}</td>
                         <td>{{ $item->order_total }}</td>
                         <td>{{ $item->referred_count }}</td>
