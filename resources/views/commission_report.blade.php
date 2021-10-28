@@ -152,9 +152,8 @@
   </div>
 @endsection
 @section('js')
-    <script src="{{ asset('js/app.js') }}"></script>
     <script>
-        $(function(){
+        $.when( $.ready ).then(function() {
             // DataTable Init
             oTable = $('#myTable').DataTable({
                 autoFill: true
@@ -171,10 +170,10 @@
                 .search($(this).val())
                 .draw() ;
             });
-            // View Item Click Event
-            $('.view_items').click(function(){
-                // Empty Modal Table
-                $('#modal-tbody').empty();
+            // DataTable API
+            oTable.$('.view_items').click(function(){
+                 // Empty Modal Table
+                 $('#modal-tbody').empty();
                 // Get id of data-id from event.listener 
                 let id = $(this).data('id');
                 // Get invoice no of data-invno from event.listener
@@ -207,6 +206,7 @@
                     // always executed
                 });
             });
+            // 
         });
     </script>
 @endsection

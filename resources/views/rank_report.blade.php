@@ -36,8 +36,8 @@
 @endsection
 @section('js')
     <script>
-        $(function(){
-            $('#myTable').DataTable();
-        });
+    $.when( $.ready ).then(function() {
+        $('#myTable').DataTable();
+    });
     </script>
 @endsection
