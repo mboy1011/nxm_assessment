@@ -24,18 +24,17 @@ class Reports extends Model
             'orders.order_date',
             'orders.id as oid',
             DB::raw('distributor_name(users.id) as dist_name'),
-            DB::raw("referred_count_by_date(users.id,'$min','$max') as referred_count"),
-            DB::raw('percentage_commission(referred_count(users.id)) as percentages'),
+            DB::raw("referred_count_by_date(users.referred_by,'$min','$max') as referred_count"),
+            DB::raw('percentage_commission(referred_count(users.referred_by)) as percentages'),
             DB::raw('order_total_count(orders.id) as order_total'),
-            DB::raw('(order_total_count(orders.id)*percentage_commission(referred_count(users.id))) as commission')
-        )
+            DB::raw('(order_total_count(orders.id)*(percentage_commission(referred_count(users.referred_by))/100)) as commission')        )
         // DB::raw('(SELECT COUNT(*) FROM users vt WHERE vt.referred_by=users.id) as referred_count'))
         ->join('user_category','user_category.user_id','=','users.id')
         ->join('categories','categories.id','=','user_category.category_id')
         ->join('orders','orders.purchaser_id','=','users.id')
         // ->where('categories.id','=',2)
         ->havingRaw('users.enrolled_date BETWEEN ? AND ?',[$min,$max])
-        ->skip(0)
+        // ->skip(0)
         ->take(100)
         ->get();
         return $result;
@@ -45,11 +44,11 @@ class Reports extends Model
     {
         $result = Reports::select(
             'users.first_name',
-            DB::raw('order_total_sales_count(users.id) as total_sales')
+            DB::raw('dist_total_sales_from_referral(users.id) as total_sales')
         )->join('user_category','user_category.user_id','=','users.id')
         ->where('user_category.category_id','=',1)
         ->orderBy('total_sales','DESC')
-        ->take(100)
+        ->limit(100)
         ->get();
         return $result;
     }
