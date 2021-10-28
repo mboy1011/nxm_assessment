@@ -194,6 +194,30 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `dist_total_sales_from_referral` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` FUNCTION `dist_total_sales_from_referral`(
+	ref_by_id INT(11)
+) RETURNS float(11,2)
+    DETERMINISTIC
+BEGIN
+	DECLARE result_count FLOAT(11,2);
+	CALL DIST_TOTAL_SALES_FROM_REFERRAL(ref_by_id,result_count);
+	RETURN result_count;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `order_total_count` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -253,27 +277,51 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`admin`@`localhost` FUNCTION `percentage_commission`(
-	commission DECIMAL(10,2)
-) RETURNS varchar(3) CHARSET utf8mb4
+	commission FLOAT(10,2)
+) RETURNS int
     DETERMINISTIC
 BEGIN
-	DECLARE commission_text varchar(3);
+	DECLARE commission_text INT(2);
     
     IF commission = 0 THEN
-		SET commission_text = "5%";
+		SET commission_text = 5;
     ELSEIF (commission <= 4 
 		AND commission > 0) THEN
-		SET commission_text = "5%";
+		SET commission_text = 5;
 	ELSEIF (commission >= 5 AND commission <= 10) THEN
-		SET commission_text = "10%";
+		SET commission_text = 10;
 	ELSEIF (commission >= 10 AND commission <= 20) THEN
-		SET commission_text = "15%";
+		SET commission_text = 15;
 	ELSEIF (commission >= 20 AND commission <= 30) THEN
-		SET commission_text = "20%";
+		SET commission_text = 20;
     ELSEIF commission >= 30 THEN
-		SET commission_text = "30%";
+		SET commission_text = 30;
     END IF;		
 		RETURN (commission_text);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `referral_by_order_total_sales_count` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` FUNCTION `referral_by_order_total_sales_count`(
+	ref_by_id INT(11)
+) RETURNS float(11,2)
+    DETERMINISTIC
+BEGIN
+	DECLARE result_count FLOAT(11,2);
+	CALL REFERRAL_BY_ORDER_TOTAL_SALES_COUNT(ref_by_id,result_count);
+	RETURN result_count;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -355,6 +403,30 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DIST_TOTAL_SALES_FROM_REFERRAL` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `DIST_TOTAL_SALES_FROM_REFERRAL`(
+	IN ref_by_id INT(11),
+    OUT result_count DECIMAL(11,2)
+)
+BEGIN
+	SELECT SUM(referral_by_order_total_sales_count(users.id))  INTO result_count 
+	FROM users 
+	WHERE referred_by=ref_by_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ORDER_TOTAL_COUNT` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -399,6 +471,32 @@ BEGIN
 	SELECT SUM(order_total_count(orders.id)) INTO result_count
     FROM orders 
     WHERE orders.purchaser_id=ref_by_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `REFERRAL_BY_ORDER_TOTAL_SALES_COUNT` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `REFERRAL_BY_ORDER_TOTAL_SALES_COUNT`(
+	IN ref_by_id INT(11),
+    OUT result_count DECIMAL(11,2)
+)
+BEGIN   
+    SELECT 
+    SUM(order_total_sales_count(users.id)) INTO result_count
+    FROM users 
+    JOIN orders ON orders.purchaser_id=users.id 
+    WHERE users.id=ref_by_id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -471,4 +569,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-21 12:45:26
+-- Dump completed on 2021-10-28 18:27:00
