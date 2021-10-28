@@ -15,7 +15,7 @@
                 <th scope="row">
                     @if($loop->index==0)
                         @if ($data[$loop->index+1]['total_sales']==$item->total_sales)
-                            {{ $i }}
+                            {{ $i+=1 }}
                         @else
                             {{ $i+=1 }}
                         @endif

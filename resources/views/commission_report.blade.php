@@ -78,12 +78,15 @@
             <div class="form-group mx-sm-3 mb-2">
                 <button type="submit" class="btn btn-primary">Filter</button>
             </div>
+            <div class="form-group mx-sm-5 mb-2 fw-bold">
+                Total Commission: $<span id="total"></span>
+            </div>
         </form>
     </div>
     <br>
     <div class="table-responsive">
         <table class="table" id="myTable">
-            <thead class="thead-dark">
+            <thead>
                 <tr>
                     <th scope="col">Invoice Number</th>
                     <th scope="col">Purchaser</th>
@@ -105,14 +108,13 @@
                         <td>{{ $item->order_date }}</td>
                         <td>{{ $item->order_total }}</td>
                         <td>{{ $item->referred_count }}</td>
-                        <td>{{ $item->percentages }}</td>
+                        <td>{{ $item->percentages }}%</td>
                         <td>{{ $item->commission }}</td>
                         <td>
                             <button type="button" class="btn btn-primary btn-sm view_items" data-invno="{{ $item->invoice_number }}" data-id="{{ $item->oid }}">View Items</button>
                         </td>
                     </tr>
                 @endforeach
-    
             </tbody>
         </table>  
     </div>
@@ -154,6 +156,7 @@
 @section('js')
     <script>
         $.when( $.ready ).then(function() {
+
             // DataTable Init
             oTable = $('#myTable').DataTable({
                 autoFill: true
@@ -207,6 +210,8 @@
                 });
             });
             // 
+            internationalNumberFormat = new Intl.NumberFormat('en-US',{currency: 'USD',minimumFractionDigits: 2,})
+            $('#total').text(internationalNumberFormat.format(oTable.column(7).data().sum()));
         });
     </script>
 @endsection
